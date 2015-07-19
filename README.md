@@ -2,7 +2,7 @@
 ==============
 
 Boulangerie is a Ruby gem for building authorization systems using the
-[Macaroons][http://macaroons.io] bearer credential format.
+[Macaroons](http://macaroons.io) bearer credential format.
 
 This gem provides an opinionated, high-level interface designed to simplify
 integration of Macaroons into any authorization scenario.
