@@ -8,6 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = Boulangerie::VERSION
   spec.authors       = ["Tony Arcieri"]
   spec.email         = ["bascule@gmail.com"]
+  spec.licenses      = ["MIT"]
 
   spec.summary       = "An opinionated library for creating and verifying Macaroons in Ruby"
   spec.description   = "Boulangerie provides schemas, creation, and verification for the Macaroons bearer credential format"
@@ -22,6 +23,5 @@ Gem::Specification.new do |spec|
 
   spec.add_development_dependency "bundler", "~> 1.10"
   spec.add_development_dependency "rake", "~> 10.0"
-  spec.add_development_dependency "rspec"
   spec.add_development_dependency "rspec"
 end
