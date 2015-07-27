@@ -1,4 +1,15 @@
+bundler_args: --without development doc
 language: ruby
 rvm:
+  - 2.0.0
+  - 2.1.6
   - 2.2.2
-before_install: gem install bundler -v 1.10.5
+  - jruby
+  - jruby-head
+  - ruby-head
+matrix:
+  allow_failures:
+    - rvm: jruby-head
+    - rvm: ruby-head
+  fast_finish: true
+sudo: false
