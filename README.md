@@ -1,5 +1,6 @@
 ![Boulangerie](https://raw.githubusercontent.com/cryptosphere/boulangerie/master/boulangerie.png)
 ==============
+[![Build Status](https://travis-ci.org/cryptosphere/boulangerie.svg?branch=master)](https://travis-ci.org/cryptosphere/boulangerie)
 
 Boulangerie is a Ruby gem for building authorization systems using the
 [Macaroons](http://macaroons.io) bearer credential format.
