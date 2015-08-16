@@ -1,4 +1,12 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-# Specify your gem's dependencies in boulangerie.gemspec
 gemspec
+
+group :development do
+  gem "guard-rspec"
+  gem "rubocop"
+end
+
+group :test do
+  gem "coveralls", require: false
+end
