@@ -43,7 +43,69 @@ Or install it yourself as:
 
 ## Usage
 
-Coming soon!
+Boulangerie can be used with Rails or any other pure Ruby project which has
+use for bearer credentials.
+
+### Rails 4.1+
+
+Add the following to `config/initializers/boulangerie.rb`:
+
+```rails
+Boulangerie.setup(
+  schema: Rails.root.join("config/boulangerie_schema.yml"),
+  keys:   Rails.application.secrets.boulangerie_keys
+  key_id: "k1"
+)
+```
+
+You will also need to edit `config/secrets.yml` and add the following to
+your respective environments (example given for development):
+
+```yaml
+development:
+  secret_key_base: DEADBEEFDEADBEEFDEADBEEF[...]
+  boulangerie_keys:
+    k0: "place any random value here ideally at least 32 bytes of random hex"
+    k1: "boulangerie supports key rotation so you can list more than one key"
+```
+
+The `boulangerie_keys` hash contains a "keyring" of keys which can be used to
+create or verify Macaroons. The names of the keys (e.g. `k0`, `k1`) are
+arbitrary, but all new macaroons will use the key whose ID was passed in as
+the `key_id` option to `Boulangerie::Maker#new`. This allows for key rotation,
+i.e. periodically you can add a new key, and Macaroons minted under an old key
+will still verify. This is good security practice and you should definitely
+take advantage of it.
+
+You'll also need to create a `config/boulangerie_schema.yml` file that
+contains the schema for your Macaroons. Here is a basic schema that will
+add `time_before` and `time_after` timestamp assertions on your Macaroons:
+
+```yaml
+---
+time_before:
+  default_value: 43200
+time_after: {}
+```
+
+This defines a Macaroon schema which includes two *caveats*: an expiration
+date and a creation time, before which the Macaroon is not considered valid.
+The predicate matchers for these particular caveats are built into
+Boulangerie, but you can extend it with your own.
+
+Finally, to actually use Macaroons to make authorization decisions, we need
+to configure Boulangerie in a given controller:
+
+```ruby
+class MyController < ApplicationController
+  authorize_with_boulangerie
+end
+```
+
+### Other Ruby libraries
+
+The usage is quite similar to the Rails example above, but we can ignore any
+non-Rails specific elements.
 
 ## Supported Ruby Versions
 
