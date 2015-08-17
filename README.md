@@ -50,7 +50,7 @@ use for bearer credentials.
 
 Add the following to `config/initializers/boulangerie.rb`:
 
-```rails
+```ruby
 Boulangerie.setup(
   schema: Rails.root.join("config/boulangerie_schema.yml"),
   keys:   Rails.application.secrets.boulangerie_keys
