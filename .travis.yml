@@ -3,12 +3,12 @@ rvm:
   - 2.0.0
   - 2.1.6
   - 2.2.2
-  - jruby
-  - jruby-head
   - ruby-head
+  - jruby-9.0.0.0
+  - jruby-head
 matrix:
   allow_failures:
-    - rvm: jruby-head
     - rvm: ruby-head
+    - rvm: jruby-head
   fast_finish: true
 sudo: false
