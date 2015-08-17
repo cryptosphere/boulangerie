@@ -1,0 +1,6 @@
+---
+time_before:
+  class_name: Boulangerie::Predicates::TimeBefore
+  default_value: 43200
+time_after:
+  class_name: Boulangerie::Predicates::TimeAfter
