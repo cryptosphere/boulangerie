@@ -16,7 +16,7 @@ integration of Macaroons into any authorization scenario.
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'boulangerie'
+gem "boulangerie"
 ```
 
 And then execute:
