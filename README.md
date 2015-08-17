@@ -71,7 +71,7 @@ development:
 
 The `boulangerie_keys` hash contains a "keyring" of keys which can be used to
 create or verify Macaroons. The names of the keys (e.g. `k0`, `k1`) are
-arbitrary, but all new macaroons will use the key whose ID was passed in as
+arbitrary, but all new Macaroons will use the key whose ID was passed in as
 the `key_id` option to `Boulangerie::Maker#new`. This allows for key rotation,
 i.e. periodically you can add a new key, and Macaroons minted under an old key
 will still verify. This is good security practice and you should definitely
