@@ -7,3 +7,6 @@ Style/StringLiterals:
 Metrics/MethodLength:
   CountComments: false
   Max: 20
+
+Metrics/AbcSize:
+  Enabled: false

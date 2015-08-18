@@ -22,10 +22,10 @@ module Boulangerie
 
         @predicates[name] =
           if default_value
-            predicate_class.new(default_value)
+            predicate_class.new(default_value.freeze)
           else
             predicate_class.new
-          end
+          end.freeze
       end
 
       @predicates.freeze
