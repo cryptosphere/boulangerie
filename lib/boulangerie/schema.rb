@@ -3,32 +3,37 @@ require "yaml"
 module Boulangerie
   # Represents the schema of predicates in a Macaroon
   class Schema
-    attr_reader :predicates
+    # Error parsing schema
+    ParseError = Class.new(StandardError)
+
+    attr_reader :schema_id, :versions
 
     # Create a Boulangerie::Schema from a String containing unparsed YAML
     def self.from_yaml(yaml)
       new YAML.load(yaml)
     end
 
-    def initialize(predicates)
-      @predicates = {}
+    def initialize(schema)
+      @schema_id = schema["schema-id"]
 
-      predicates.each do |name, options|
-        class_name = options["class_name"]
-        fail ArgumentError, "no class_name defined for #{name}" unless class_name
+      fail ParseError, "no schema-id present (must be 16-digit hex number)" unless @schema_id
+      fail ParseError, "bad schema-id: #{@schema_id.inspect}" unless @schema_id.match(/\h{16}/)
+      fail ParseError, "no predicates in schema" unless schema["predicates"]
 
-        predicate_class = Object.const_get(class_name)
-        default_value = options["default_value"]
+      @versions = {}
 
-        @predicates[name] =
-          if default_value
-            predicate_class.new(default_value.freeze)
-          else
-            predicate_class.new
-          end.freeze
+      schema["predicates"].each_with_index do |(version_name, predicates), index|
+        version = version_name[/\Av(\d+)\z/, 1]
+        fail ParseError, "malformed version identifier: #{version_name.inspect}" unless version
+
+        version = Integer(version, 10)
+        fail ParseError, "non-sequential version: #{version_name.inspect}" unless version == index
+
+        # TODO: check types of predicates
+        @versions[version] = predicates.freeze
       end
 
-      @predicates.freeze
+      @versions.freeze
     end
   end
 end
