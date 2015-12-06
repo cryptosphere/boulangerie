@@ -1,7 +1,7 @@
 class Boulangerie
   # Stores keys to be used for minting and verifying Macaroons
   class Keyring
-    def initialize(keys, key_id:)
+    def initialize(keys, key_id: nil)
       fail TypeError, "expected Hash, got #{keys.class}" unless keys.is_a? Hash
 
       # TODO: verify strength of keys

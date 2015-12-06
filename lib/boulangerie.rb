@@ -22,7 +22,7 @@ class Boulangerie
     @default
   end
 
-  def initialize(schema:, keys:, key_id:)
+  def initialize(schema: nil, keys: nil, key_id: nil)
     @schema =
       case schema
       when Schema           then schema
