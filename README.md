@@ -79,7 +79,7 @@ take advantage of it.
 
 You'll also need to create a `config/boulangerie_schema.yml` file that
 contains the schema for your Macaroons. Here is a basic schema that will
-add `time_before` and `time_after` timestamp assertions on your Macaroons:
+add `time-before` and `time-after` timestamp assertions on your Macaroons:
 
 ```yaml
 ---
@@ -104,7 +104,7 @@ class MyController < ApplicationController
 end
 ```
 
-### Other Ruby libraries
+### Non-Rails Usage
 
 The usage is quite similar to the Rails example above, but we can ignore any
 non-Rails specific elements.
