@@ -65,12 +65,12 @@ your respective environments (example given for development):
 development:
   secret_key_base: DEADBEEFDEADBEEFDEADBEEF[...]
   boulangerie_keys:
-    k0: "place any random value here ideally at least 32 bytes of random hex"
-    k1: "boulangerie supports key rotation so you can list more than one key"
+    key0: "place any random value here ideally at least 32 bytes of random hex"
+    key1: "boulangerie supports key rotation so you can list more than one key"
 ```
 
 The `boulangerie_keys` hash contains a "keyring" of keys which can be used to
-create or verify Macaroons. The names of the keys (e.g. `k0`, `k1`) are
+create or verify Macaroons. The names of the keys (e.g. `key0`, `key1`) are
 arbitrary, but all new Macaroons will use the key whose ID was passed in as
 the `key_id` option to `Boulangerie::Maker#new`. This allows for key rotation,
 i.e. periodically you can add a new key, and Macaroons minted under an old key
@@ -83,9 +83,11 @@ add `time_before` and `time_after` timestamp assertions on your Macaroons:
 
 ```yaml
 ---
-time_before:
-  default_value: 43200
-time_after: {}
+schema-id: ee6da70e5ba01fec
+predicates:
+  v0:
+    time-before: DateTime
+    time-after: DateTime
 ```
 
 This defines a Macaroon schema which includes two *caveats*: an expiration
@@ -116,7 +118,7 @@ This library supports and is tested against the following Ruby versions:
 
 ## Contributing
 
-* Fork this repository on github
+* Fork this repository on GitHub
 * Make your changes and send us a pull request
 * If we like them we'll merge them
 * If we've accepted a patch, feel free to ask for commit access

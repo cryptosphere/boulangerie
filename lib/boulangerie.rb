@@ -1,17 +1,20 @@
 require "boulangerie/version"
 
+require "boulangerie/keyring"
 require "boulangerie/schema"
 
 # An opinionated library for creating and verifying Macaroons in Ruby
 class Boulangerie
+  attr_reader :schema
+
   # Raised if Boulangerie's global maker hasn't been configured
   NotConfiguredError = Class.new(StandardError)
 
   # Default Boulangerie
   @default = nil
 
-  def self.setup(options)
-    @default = new(options)
+  def self.setup(**args)
+    @default = new(**args)
   end
 
   def self.default
@@ -19,7 +22,14 @@ class Boulangerie
     @default
   end
 
-  # TODO: do something with options
-  def initialize(_options = {})
+  def initialize(schema:, keys:, key_id:)
+    @schema =
+      case schema
+      when Schema           then schema
+      when String, Pathname then Schema.from_yaml(File.read(schema.to_s))
+      else fail TypeError,  "bad schema type: #{schema.class}"
+      end
+
+    @keyring = Keyring.new(keys, key_id: key_id)
   end
 end

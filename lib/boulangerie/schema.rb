@@ -14,15 +14,18 @@ class Boulangerie
     end
 
     def initialize(schema)
-      @schema_id = schema["schema-id"]
+      extra_keys = schema.keys - %w(schema-id predicates)
+      fail ParseError, "unrecognized key in schema: #{extra_keys.first}" unless extra_keys.empty?
 
+      @schema_id = schema["schema-id"]
       fail ParseError, "no schema-id present (must be 16-digit hex number)" unless @schema_id
       fail ParseError, "bad schema-id: #{@schema_id.inspect}" unless @schema_id.match(/\h{16}/)
-      fail ParseError, "no predicates in schema" unless schema["predicates"]
+
+      predicates = schema["predicates"]
+      fail ParseError, "no predicates in schema" unless predicates
 
       @versions = {}
-
-      schema["predicates"].each_with_index do |(version_name, predicates), index|
+      predicates.each_with_index do |(version_name, predicates), index|
         version = version_name[/\Av(\d+)\z/, 1]
         fail ParseError, "malformed version identifier: #{version_name.inspect}" unless version
 
