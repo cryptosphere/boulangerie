@@ -21,11 +21,11 @@ class Boulangerie
       fail ParseError, "no schema-id present (must be 16-digit hex number)" unless @schema_id
       fail ParseError, "bad schema-id: #{@schema_id.inspect}" unless @schema_id.match(/\h{16}/)
 
-      predicates = schema["predicates"]
-      fail ParseError, "no predicates in schema" unless predicates
+      predicate_versions = schema["predicates"]
+      fail ParseError, "no predicates in schema" unless predicate_versions
 
       @versions = {}
-      predicates.each_with_index do |(version_name, predicates), index|
+      predicate_versions.each_with_index do |(version_name, predicates), index|
         version = version_name[/\Av(\d+)\z/, 1]
         fail ParseError, "malformed version identifier: #{version_name.inspect}" unless version
 
