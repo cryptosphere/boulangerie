@@ -13,14 +13,19 @@ integration of Macaroons into any authorization scenario.
 
 ## What are Macaroons and why should I care?
 
-Macaroons are a new bearer credential format originally developed at Google,
-then popularized by Robert Escriva of the [HyperDex] project, which
-[uses Macaroons for authorization][HyperDex Macaroons]. They can be seen as
-a simpler yet more powerful alternative to other bearer credential formats
-like [JWT].
+Macaroons are a new bearer credential format
+[originally developed at Google][Macaroons Paper],
+then popularized by the [HyperDex] project, which
+[uses Macaroons for authorization][HyperDex Macaroons].
 
-A more complete answer of why you should care coming soon!
+They can be seen as a simpler yet more powerful alternative to other
+bearer credential formats like [JWT]. Unlike most other bearer credential
+formats, Macaroons bind credentials obtained by multiple parties together
+cryptographically, allowing authorization decisions to be made by many
+parties (3+) while eliminating the types of attacks that are typically
+uses against other credential formats in these scenarios.
 
+[Macaroons Paper]: http://research.google.com/pubs/pub41892.html
 [HyperDex]: http://hyperdex.org/
 [HyperDex Macaroons]: http://hyperdex.org/doc/latest/Authorization/
 [JWT]: http://jwt.io/
