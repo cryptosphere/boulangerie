@@ -1,6 +1,6 @@
 require "yaml"
 
-module Boulangerie
+class Boulangerie
   # Represents the schema of predicates in a Macaroon
   class Schema
     # Error parsing schema

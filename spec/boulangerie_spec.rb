@@ -2,7 +2,7 @@ RSpec.describe Boulangerie do
   let(:example_key_id) { "k1" }
   let(:example_keys)   { Hash.new(example_key_id => "totally secret key I swear") }
 
-  it "initializes a default Maker" do
+  it "initializes a default Boulangerie" do
     expect { described_class.default }.to raise_error(described_class::NotConfiguredError)
 
     described_class.setup(
@@ -11,6 +11,6 @@ RSpec.describe Boulangerie do
       key_id: example_key_id
     )
 
-    expect(described_class.default).to be_a described_class::Maker
+    expect(described_class.default).to be_a described_class
   end
 end
