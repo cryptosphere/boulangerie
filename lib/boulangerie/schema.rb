@@ -1,4 +1,5 @@
 require "yaml"
+require "securerandom"
 
 class Boulangerie
   # Represents the schema of predicates in a Macaroon
@@ -7,6 +8,10 @@ class Boulangerie
     ParseError = Class.new(StandardError)
 
     attr_reader :schema_id, :versions
+
+    def self.create_schema_id
+      SecureRandom.hex(8)
+    end
 
     # Create a Boulangerie::Schema from a String containing unparsed YAML
     def self.from_yaml(yaml)

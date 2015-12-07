@@ -95,8 +95,24 @@ predicates:
     time-after: DateTime
 ```
 
-This defines a Macaroon schema which includes two *caveats*: an expiration
-date and a creation time, before which the Macaroon is not considered valid.
+A `schema-id` is a 64-bit random number. This is used to identify a schema
+uniquely within your system regardless of what you decide to name or rename
+the schema file.
+
+You can generate a schema ID via `irb` or `pry`:
+
+```
+[1] pry(main)> require 'boulangerie'
+=> true
+[2] pry(main)> Boulangerie::Schema.create_schema_id
+=> "ee6da70e5ba01fec"
+```
+
+A schema-id can also be any 64-bit random number serialized as hex which
+is unique to your app/infrastructure.
+
+This schema includes two *caveats*: an expiration date and a creation time,
+before which the Macaroon is not considered valid.
 The predicate matchers for these particular caveats are built into
 Boulangerie, but you can extend it with your own.
 
