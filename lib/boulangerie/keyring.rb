@@ -13,6 +13,7 @@ class Boulangerie
       # TODO: verify strength of keys
       @keys = keys.freeze
 
+      fail ArgumentError, "key_id not in keyring: #{key_id.inspect}" unless @keys.key?(key_id)
       @default_key_id = key_id
     end
 

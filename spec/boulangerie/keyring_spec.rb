@@ -10,6 +10,12 @@ RSpec.describe Boulangerie::Keyring do
 
   let(:example_keyring) { described_class.new(example_keys, key_id: default_key_id) }
 
+  it "raises ArgumentError if key_id is not in the keyring" do
+    expect do
+      described_class.new(example_keys, key_id: "lalala")
+    end.to raise_error(ArgumentError)
+  end
+
   it "generates keys" do
     expect(described_class.generate_key).to match(/\h{64}/)
   end

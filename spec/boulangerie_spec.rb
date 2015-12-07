@@ -1,6 +1,9 @@
 RSpec.describe Boulangerie do
-  let(:example_key_id) { "k1" }
-  let(:example_keys)   { Hash.new(example_key_id => "totally secret key I swear") }
+  let(:example_key_id) { "key1" }
+
+  let(:example_keys) do
+    { example_key_id => "totally secret key I swear" }
+  end
 
   it "initializes a default Boulangerie" do
     expect { described_class.default }.to raise_error(described_class::NotConfiguredError)
