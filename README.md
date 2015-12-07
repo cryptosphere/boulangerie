@@ -142,6 +142,9 @@ end
 The usage is quite similar to the Rails example above, but we can ignore any
 non-Rails specific elements.
 
+*NOTE: Yes that description is a bit of a cop-out. More info about non-Rails
+usage coming soon!*
+
 ## Supported Ruby Versions
 
 This library supports and is tested against the following Ruby versions:
