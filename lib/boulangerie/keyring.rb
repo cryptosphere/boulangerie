@@ -1,6 +1,12 @@
+require "securerandom"
+
 class Boulangerie
   # Stores keys to be used for minting and verifying Macaroons
   class Keyring
+    def self.generate_key
+      SecureRandom.hex(32)
+    end
+
     def initialize(keys, key_id: nil)
       fail TypeError, "expected Hash, got #{keys.class}" unless keys.is_a? Hash
 

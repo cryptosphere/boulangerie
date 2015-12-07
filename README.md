@@ -59,7 +59,7 @@ Add the following to `config/initializers/boulangerie.rb`:
 Boulangerie.setup(
   schema: Rails.root.join("config/boulangerie_schema.yml"),
   keys:   Rails.application.secrets.boulangerie_keys
-  key_id: "k1"
+  key_id: "key1"
 )
 ```
 
@@ -70,17 +70,29 @@ your respective environments (example given for development):
 development:
   secret_key_base: DEADBEEFDEADBEEFDEADBEEF[...]
   boulangerie_keys:
-    key0: "place any random value here ideally at least 32 bytes of random hex"
-    key1: "boulangerie supports key rotation so you can list more than one key"
+    key0: "1b942ba242e9d39ce838d03652091695eb1fef93d35d9454498ca970a8827e8f"
+    key1: "7efc8f72d159ce31a4b2c8db6281bf8d91a2f2778d4d0062f80b977ea43a8ec4"
 ```
 
 The `boulangerie_keys` hash contains a "keyring" of keys which can be used to
-create or verify Macaroons. The names of the keys (e.g. `key0`, `key1`) are
-arbitrary, but all new Macaroons will use the key whose ID was passed in as
-the `key_id` option to `Boulangerie::Maker#new`. This allows for key rotation,
-i.e. periodically you can add a new key, and Macaroons minted under an old key
-will still verify. This is good security practice and you should definitely
-take advantage of it.
+create or verify Macaroons.
+
+To generate random keys, use the `Boulangerie::Keyring.generate_key` method,
+which you can call from `irb` or `pry`:
+
+```
+[1] pry(main)> require 'boulangerie'
+=> true
+[2] pry(main)> Boulangerie::Keyring.generate_key
+=> "1b942ba242e9d39ce838d03652091695eb1fef93d35d9454498ca970a8827e8f"
+```
+
+The names of the keys (e.g. `key0`, `key1`) are arbitrary, but all new Macaroons
+will use the key whose ID was passed in as the `key_id` option to
+`Boulangerie#initialize`. This allows for key rotation, i.e. periodically you can
+add a new key, and Macaroons minted under an old key will still verify.
+
+Rotating keys is good security practice and you should definitely take advantage of it.
 
 You'll also need to create a `config/boulangerie_schema.yml` file that
 contains the schema for your Macaroons. Here is a basic schema that will

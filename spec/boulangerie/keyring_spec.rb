@@ -10,6 +10,10 @@ RSpec.describe Boulangerie::Keyring do
 
   let(:example_keyring) { described_class.new(example_keys, key_id: default_key_id) }
 
+  it "generates keys" do
+    expect(described_class.generate_key).to match(/\h{64}/)
+  end
+
   it "does not include keys in #inspect" do
     example_keys.each do |_kid, key|
       expect(example_keyring.inspect).to_not include(key)
