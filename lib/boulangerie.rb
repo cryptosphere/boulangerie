@@ -1,6 +1,7 @@
 require "securerandom"
 require "yaml"
 
+require "rbnacl/libsodium"
 require "macaroons"
 
 require "boulangerie/version"
