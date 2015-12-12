@@ -10,3 +10,4 @@ predicates:
   v1:
     another-stringy: String
     another-booleany: Boolean
+randomgarbage: Cool!

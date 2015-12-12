@@ -1,5 +1,4 @@
 ---
-schema-id: ee6da70e5ba01fec
 predicates:
   v0:
     time-before: DateTime
@@ -7,6 +6,3 @@ predicates:
     blobby: Binary
     stringy: String
     booleany: Boolean
-  v1:
-    another-stringy: String
-    another-booleany: Boolean

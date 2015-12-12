@@ -1,0 +1,7 @@
+---
+schema-id: ee6da70e5ba01fec
+predicates:
+  v0:
+    time-before: DateTime
+    time-after: DateTime
+    broken: Derp

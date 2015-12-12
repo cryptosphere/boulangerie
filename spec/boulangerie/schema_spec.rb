@@ -1,21 +1,59 @@
 RSpec.describe Boulangerie::Schema do
-  let(:example_schema_file) { fixture_path + "example_schema.yml" }
-  let(:example_schema_id)   { "ee6da70e5ba01fec" }
-
   it "generates random schema-ids" do
     expect(described_class.create_schema_id).to match(/\h{16}/)
   end
 
-  it "loads schemas from YAML files" do
-    schema = described_class.from_yaml(example_schema_file.read)
+  context "valid schema" do
+    let(:example_schema_file) { fixture_path + "example_schema.yml" }
+    let(:example_schema_id)   { "ee6da70e5ba01fec" }
 
-    expect(schema.schema_id).to eq example_schema_id
-    expect(schema.versions.size).to eq 1
+    it "loads schemas from YAML files" do
+      schema = described_class.from_yaml(example_schema_file.read)
+
+      expect(schema.schema_id).to eq example_schema_id
+      expect(schema.versions.size).to eq 2
+    end
   end
 
-  it "rejects schemas without a schema-id"
+  context "invalid schemas" do
+    describe "missing schema-id" do
+      let(:example_schema_file) { fixture_path + "unidentified_schema.yml" }
 
-  it "rejects non-sequential version numbers"
+      it "raises InvalidSchemaIdError" do
+        expect do
+          described_class.from_yaml(example_schema_file.read)
+        end.to raise_error(Boulangerie::Schema::InvalidSchemaIdError)
+      end
+    end
 
-  it "rejects schemas with bad types"
+    describe "non-sequential version numbers" do
+      let(:example_schema_file) { fixture_path + "badly_versioned_schema.yml" }
+
+      it "raises InvalidVersionError" do
+        expect do
+          described_class.from_yaml(example_schema_file.read)
+        end.to raise_error(Boulangerie::Schema::InvalidVersionError)
+      end
+    end
+
+    describe "invalid types" do
+      let(:example_schema_file) { fixture_path + "badly_typed_schema.yml" }
+
+      it "raises InvalidTypeError" do
+        expect do
+          described_class.from_yaml(example_schema_file.read)
+        end.to raise_error(Boulangerie::Schema::InvalidTypeError)
+      end
+    end
+
+    describe "unrecognized toplevel keys" do
+      let(:example_schema_file) { fixture_path + "invalid_keys_schema.yml" }
+
+      it "raises ParseError" do
+        expect do
+          described_class.from_yaml(example_schema_file.read)
+        end.to raise_error(Boulangerie::Schema::ParseError)
+      end
+    end
+  end
 end

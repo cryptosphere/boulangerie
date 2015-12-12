@@ -7,6 +7,6 @@ predicates:
     blobby: Binary
     stringy: String
     booleany: Boolean
-  v1:
+  v2:
     another-stringy: String
     another-booleany: Boolean
