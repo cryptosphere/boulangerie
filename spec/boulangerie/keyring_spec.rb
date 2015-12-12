@@ -16,6 +16,12 @@ RSpec.describe Boulangerie::Keyring do
     end.to raise_error(ArgumentError)
   end
 
+  it "raises ArgumentError if a key is too short" do
+    expect do
+      described_class.new({default_key_id => "derp"}, key_id: default_key_id)
+    end.to raise_error(ArgumentError)
+  end
+
   it "generates keys" do
     expect(described_class.generate_key).to match(/\h{64}/)
   end

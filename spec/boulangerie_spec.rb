@@ -2,7 +2,7 @@ RSpec.describe Boulangerie do
   let(:example_key_id) { "key1" }
 
   let(:example_keys) do
-    { example_key_id => "totally secret key I swear" }
+    { example_key_id => "BADA55BADA55BADA55BADA55BADA55BADA55BADA55BADA55BADA55BADA55BADA" }
   end
 
   it "raises NotConfiguredError unless configured" do

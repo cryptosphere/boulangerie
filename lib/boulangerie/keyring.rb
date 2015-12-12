@@ -3,18 +3,23 @@ require "securerandom"
 class Boulangerie
   # Stores keys to be used for minting and verifying Macaroons
   class Keyring
+    # Size of a parsed key in bytes (256-bits)
+    KEY_LENGTH = 32
+
     def self.generate_key
-      SecureRandom.hex(32)
+      SecureRandom.hex(KEY_LENGTH)
     end
 
     def initialize(keys, key_id: nil)
       fail TypeError, "expected Hash, got #{keys.class}" unless keys.is_a? Hash
+      fail ArgumentError, "key_id not in keyring: #{key_id.inspect}" unless keys.key?(key_id)
 
-      # TODO: verify strength of keys
+      keys.each do |id, key|
+        fail ArgumentError, "malformatted key: #{id}" unless key.length == KEY_LENGTH * 2 # hex
+      end
+
       @keys = keys.freeze
-
-      fail ArgumentError, "key_id not in keyring: #{key_id.inspect}" unless @keys.key?(key_id)
-      @default_key_id = key_id
+      @default_key_id = key_id.freeze
     end
 
     def inspect
