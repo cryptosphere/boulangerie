@@ -11,7 +11,7 @@ RSpec.describe Boulangerie::Schema do
       schema = described_class.from_yaml(example_schema_file.read)
 
       expect(schema.schema_id).to eq example_schema_id
-      expect(schema.versions.size).to eq 2
+      expect(schema.current_version).to eq 1
     end
   end
 

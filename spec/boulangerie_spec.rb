@@ -1,5 +1,6 @@
 RSpec.describe Boulangerie do
-  let(:example_key_id) { "key1" }
+  let(:example_key_id)   { "key1" }
+  let(:example_location) { "https://mysupercoolsite.com" }
 
   let(:example_keys) do
     { example_key_id => "BADA55BADA55BADA55BADA55BADA55BADA55BADA55BADA55BADA55BADA55BADA" }
@@ -11,9 +12,10 @@ RSpec.describe Boulangerie do
 
   it "initializes a default Boulangerie" do
     boulangerie = described_class.new(
-      schema: fixture_path.join("example_schema.yml"),
-      keys:   example_keys,
-      key_id: example_key_id
+      schema:   fixture_path.join("example_schema.yml"),
+      keys:     example_keys,
+      key_id:   example_key_id,
+      location: example_location
     )
 
     expect(boulangerie).to be_a described_class
@@ -21,11 +23,46 @@ RSpec.describe Boulangerie do
 
   it "initializes from a Schema class instead of a path" do
     boulangerie = described_class.new(
-      schema: Boulangerie::Schema.from_yaml(fixture_path.join("example_schema.yml").read),
-      keys:   example_keys,
-      key_id: example_key_id
+      schema:   Boulangerie::Schema.from_yaml(fixture_path.join("example_schema.yml").read),
+      keys:     example_keys,
+      key_id:   example_key_id,
+      location: example_location
     )
 
     expect(boulangerie).to be_a described_class
+  end
+
+  context "minting tokens" do
+    let(:example_caveats) do
+      {
+        "time-after"  => Time.now,
+        "time-before" => Time.now + 5
+      }
+    end
+
+    let(:boulangerie) do
+      described_class.new(
+        schema:   fixture_path.join("simple_schema.yml"),
+        keys:     example_keys,
+        key_id:   example_key_id,
+        location: example_location
+      )
+    end
+
+    it "creates Macaroons" do
+      Timecop.freeze do
+        macaroon = boulangerie.create_macaroon(example_caveats)
+
+        expect(macaroon).to be_a Macaroon
+        expect(macaroon.location).to eq example_location
+
+        # TODO: verify predicates
+      end
+    end
+
+    it "bakes cookies as strings" do
+      cookie = boulangerie.bake(example_caveats)
+      expect(cookie).to be_a String
+    end
   end
 end

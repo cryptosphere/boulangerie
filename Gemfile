@@ -7,5 +7,8 @@ group :development do
 end
 
 group :test do
+  gem "rspec"
+  gem "timecop"
+  gem "rubocop"
   gem "coveralls", require: false
 end

@@ -1,6 +1,3 @@
-require "yaml"
-require "securerandom"
-
 class Boulangerie
   # Represents the schema of predicates in a Macaroon
   class Schema
@@ -30,7 +27,7 @@ class Boulangerie
     # Invalid type specification
     InvalidTypeError = Class.new(ParseError)
 
-    attr_reader :schema_id, :versions
+    attr_reader :schema_id
 
     def self.create_schema_id
       SecureRandom.hex(8)
@@ -56,8 +53,8 @@ class Boulangerie
         fail InvalidSchemaIdError, "bad schema-id: #{@schema_id.inspect}"
       end
 
-      predicate_versions = schema["predicates"]
-      fail ParseError, "no predicates in schema" unless predicate_versions
+      predicate_versions = Array(schema["predicates"])
+      fail ParseError, "no predicates in schema" if predicate_versions.empty?
 
       @versions = predicate_versions.map.with_index do |(version_name, predicates), index|
         unless (version = version_name[/\Av(\d+)\z/, 1])
@@ -74,6 +71,11 @@ class Boulangerie
       end
 
       @versions.freeze
+    end
+
+    # What is the current version of the loaded schema?
+    def current_version
+      @versions.count - 1
     end
 
     private

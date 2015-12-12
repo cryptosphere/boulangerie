@@ -57,9 +57,10 @@ Add the following to `config/initializers/boulangerie.rb`:
 
 ```ruby
 Boulangerie.setup(
-  schema: Rails.root.join("config/boulangerie_schema.yml"),
-  keys:   Rails.application.secrets.boulangerie_keys
-  key_id: "key1"
+  schema:   Rails.root.join("config/boulangerie_schema.yml"),
+  keys:     Rails.application.secrets.boulangerie_keys
+  key_id:   "key1"
+  location: "https://mycoolsite.com"
 )
 ```
 
@@ -128,12 +129,37 @@ before which the Macaroon is not considered valid.
 The predicate matchers for these particular caveats are built into
 Boulangerie, but you can extend it with your own.
 
+To create a Macaroon, we'll need to call the `#bake` method. The following
+will create a new Macaroon and set it as the "my_macaroon" cookie:
+
+```ruby
+class AuthenticationController < ApplicationController
+  # Perform some kind of authentication ritual here
+  before_action :check_credentials, :only => :authenticate
+
+  def authenticate
+    expires_at = 24.hours.from_now
+
+    cookie = Boulangerie.bake(
+      "time-after"  => Time.now,
+      "time-before" => expires_at
+    )
+
+    cookies[:my_macaroon] = {
+      value:    cookie,
+      expires:  expires_at,
+      secure:   true,
+      httponly: true
+    }
+  end
+```
+
 Finally, to actually use Macaroons to make authorization decisions, we need
 to configure Boulangerie in a given controller:
 
 ```ruby
 class MyController < ApplicationController
-  authorize_with_boulangerie
+  authorize_with_boulangerie :cookie => :my_macaroon
 end
 ```
 
