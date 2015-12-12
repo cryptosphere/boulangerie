@@ -4,6 +4,12 @@ require "securerandom"
 class Boulangerie
   # Represents the schema of predicates in a Macaroon
   class Schema
+    # Toplevel keys allowed in the schema
+    VALID_TOPLEVEL_KEYS = %w(
+      schema-id
+      predicates
+    )
+
     # Built-in types supported by Boulangerie
     BUILT_IN_TYPES = %w(
       DateTime
@@ -36,22 +42,32 @@ class Boulangerie
     end
 
     def initialize(schema)
-      extra_keys = schema.keys - %w(schema-id predicates)
-      fail ParseError, "unrecognized key in schema: #{extra_keys.first}" unless extra_keys.empty?
+      unless (extra_keys = schema.keys - VALID_TOPLEVEL_KEYS).empty?
+        fail ParseError, "unrecognized key in schema: #{extra_keys.first}"
+      end
 
       @schema_id = schema["schema-id"]
-      fail InvalidSchemaIdError, "no schema-id present (must be 16-digit hex number)" unless @schema_id
-      fail InvalidSchemaIdError, "bad schema-id: #{@schema_id.inspect}" unless @schema_id.match(/\h{16}/)
+
+      unless @schema_id
+        fail InvalidSchemaIdError, "no schema-id present (must be 16-digit hex number)"
+      end
+
+      unless @schema_id.match(/\h{16}/)
+        fail InvalidSchemaIdError, "bad schema-id: #{@schema_id.inspect}"
+      end
 
       predicate_versions = schema["predicates"]
       fail ParseError, "no predicates in schema" unless predicate_versions
 
       @versions = predicate_versions.map.with_index do |(version_name, predicates), index|
-        version = version_name[/\Av(\d+)\z/, 1]
-        fail InvalidVersionError, "malformed version identifier: #{version_name.inspect}" unless version
+        unless (version = version_name[/\Av(\d+)\z/, 1])
+          fail InvalidVersionError, "malformed version identifier: #{version_name.inspect}"
+        end
 
         version = Integer(version, 10)
-        fail InvalidVersionError, "non-sequential version: #{version_name.inspect}" unless version == index
+        unless version == index
+          fail InvalidVersionError, "non-sequential version: #{version_name.inspect}"
+        end
 
         parsed_predicates = predicates.map { |id, options| [id, parse_predicate(options)] }
         Hash[parsed_predicates].freeze
