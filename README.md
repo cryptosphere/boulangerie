@@ -49,7 +49,7 @@ Or install it yourself as:
 ## Usage
 
 Boulangerie can be used with Rails or any other pure Ruby project which has
-use for bearer credentials.
+need for making authorization decisions using cookie-like bearer credentials.
 
 ### Rails 4.1+
 
