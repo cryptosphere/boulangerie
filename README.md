@@ -5,15 +5,15 @@
 [![Code Climate](https://codeclimate.com/github/cryptosphere/boulangerie/badges/gpa.svg)](https://codeclimate.com/github/cryptosphere/boulangerie)
 [![Coverage Status](https://coveralls.io/repos/cryptosphere/boulangerie/badge.svg?branch=master&service=github)](https://coveralls.io/github/cryptosphere/boulangerie?branch=master)
 
-Boulangerie is a Ruby gem for building authorization systems using the
-[Macaroons](http://macaroons.io) bearer credential format.
+Boulangerie is a Ruby gem for building authorization systems using
+[Macaroons](http://macaroons.io), a better kind of cookie.
 
 This gem provides an opinionated, high-level interface designed to simplify
 integration of Macaroons into any authorization scenario.
 
 ## What are Macaroons and why should I care?
 
-Macaroons are a new bearer credential format
+Macaroons are a new cookie-like bearer credential format
 [originally developed at Google][Macaroons Paper],
 then popularized by the [HyperDex] project, which
 [uses Macaroons for authorization][HyperDex Macaroons].
