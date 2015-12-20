@@ -27,7 +27,7 @@ class Boulangerie
     # Invalid type specification
     InvalidTypeError = Class.new(ParseError)
 
-    attr_reader :schema_id
+    attr_reader :schema_id, :predicates
 
     def self.create_schema_id
       SecureRandom.hex(8)
@@ -44,33 +44,34 @@ class Boulangerie
       end
 
       @schema_id = schema["schema-id"]
-
-      unless @schema_id
-        fail InvalidSchemaIdError, "no schema-id present (must be 16-digit hex number)"
-      end
-
-      unless @schema_id.match(/\h{16}/)
-        fail InvalidSchemaIdError, "bad schema-id: #{@schema_id.inspect}"
-      end
+      fail InvalidSchemaIdError, "no schema-id present" unless @schema_id
+      fail InvalidSchemaIdError, "bad schema-id: #{@schema_id}" unless @schema_id.match(/\h{16}/)
 
       predicate_versions = Array(schema["predicates"])
       fail ParseError, "no predicates in schema" if predicate_versions.empty?
 
+      @predicates = {}
       @versions = predicate_versions.map.with_index do |(version_name, predicates), index|
         unless (version = version_name[/\Av(\d+)\z/, 1])
           fail InvalidVersionError, "malformed version identifier: #{version_name.inspect}"
         end
 
         version = Integer(version, 10)
-        unless version == index
-          fail InvalidVersionError, "non-sequential version: #{version_name.inspect}"
+        fail InvalidVersionError, "non-sequential version: #{version}" unless version == index
+
+        version_predicates = {}
+        predicates.each do |id, options|
+          fail ParseError, "predicate #{id} specified twice" if @predicates.key?(id)
+          options = parse_predicate(options)
+
+          @predicates[id.freeze] = options
+          version_predicates[id] = options
         end
 
-        parsed_predicates = predicates.map { |id, options| [id, parse_predicate(options)] }
-        Hash[parsed_predicates].freeze
-      end
+        version_predicates.freeze
+      end.freeze
 
-      @versions.freeze
+      @predicates.freeze
     end
 
     # What is the current version of the loaded schema?

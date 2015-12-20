@@ -55,5 +55,15 @@ RSpec.describe Boulangerie::Schema do
         end.to raise_error(Boulangerie::Schema::ParseError)
       end
     end
+
+    describe "duplicate predicates" do
+      let(:example_schema_file) { fixture_path + "duplicate_predicate_schema.yml" }
+
+      it "raises ParseError" do
+        expect do
+          described_class.from_yaml(example_schema_file.read)
+        end.to raise_error(Boulangerie::Schema::ParseError)
+      end
+    end
   end
 end
