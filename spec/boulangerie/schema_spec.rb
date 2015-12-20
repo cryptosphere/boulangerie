@@ -39,10 +39,10 @@ RSpec.describe Boulangerie::Schema do
     describe "invalid types" do
       let(:example_schema_file) { fixture_path + "badly_typed_schema.yml" }
 
-      it "raises InvalidTypeError" do
+      it "raises TypeError" do
         expect do
           described_class.from_yaml(example_schema_file.read)
-        end.to raise_error(Boulangerie::Schema::InvalidTypeError)
+        end.to raise_error(TypeError)
       end
     end
 

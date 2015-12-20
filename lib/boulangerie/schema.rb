@@ -7,14 +7,6 @@ class Boulangerie
       predicates
     )
 
-    # Built-in types supported by Boulangerie
-    BUILT_IN_TYPES = %w(
-      DateTime
-      Binary
-      String
-      Boolean
-    )
-
     # Error parsing schema
     ParseError = Class.new(StandardError)
 
@@ -23,9 +15,6 @@ class Boulangerie
 
     # Schema version invalid
     InvalidVersionError = Class.new(ParseError)
-
-    # Invalid type specification
-    InvalidTypeError = Class.new(ParseError)
 
     attr_reader :schema_id, :predicates
 
@@ -62,10 +51,10 @@ class Boulangerie
         version_predicates = {}
         predicates.each do |id, options|
           fail ParseError, "predicate #{id} specified twice" if @predicates.key?(id)
-          options = parse_predicate(options)
+          predicate = Predicate.new(options).freeze
 
-          @predicates[id.freeze] = options
-          version_predicates[id] = options
+          @predicates[id.freeze] = predicate
+          version_predicates[id] = predicate
         end
 
         version_predicates.freeze
@@ -77,24 +66,6 @@ class Boulangerie
     # What is the current version of the loaded schema?
     def current_version
       @versions.count - 1
-    end
-
-    private
-
-    # Parse a predicate entry, extracting type information
-    def parse_predicate(options)
-      predicate = {}
-
-      case options
-      when String then predicate[:type] = options.freeze
-      else fail TypeError, "invalid predicate: #{options.inspect} (expecting String)"
-      end
-
-      unless BUILT_IN_TYPES.include?(predicate[:type])
-        fail InvalidTypeError, "invalid type: #{predicate[:type].inspect}"
-      end
-
-      predicate.freeze
     end
   end
 end

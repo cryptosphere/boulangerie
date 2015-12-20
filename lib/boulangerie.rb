@@ -8,6 +8,7 @@ require "boulangerie/version"
 
 require "boulangerie/identifier"
 require "boulangerie/keyring"
+require "boulangerie/predicate"
 require "boulangerie/schema"
 
 # An opinionated library for creating and verifying Macaroons in Ruby
@@ -16,6 +17,9 @@ class Boulangerie
 
   # Raised if Boulangerie's global maker hasn't been configured
   NotConfiguredError = Class.new(StandardError)
+
+  # Caveats are invalid
+  InvalidCaveatError = Class.new(StandardError)
 
   # Default Boulangerie
   @default = nil
@@ -45,23 +49,33 @@ class Boulangerie
     @location = location || fail(ArgumentError, "no location given")
   end
 
+  # Creates a "golden macaroon" with no caveats
+  # WARNING: This bypasses the security benefits Boulangerie ordinarily
+  # provides. Make sure you know what you're doing!
+  #
+  # @return [Macaroon] a new golden Macaroon object with no caveats
+  def golden_macaroon!
+    identifier = Identifier.new(schema: @schema, key_id: @keyring.default_key_id)
+
+    Macaroon.new(
+      key:        @keyring.default_key,
+      identifier: identifier.to_str,
+      location:   @location
+    )
+  end
+
   # Creates a new Macaroon object from the given caveats
   #
   # @param [Hash] caveats to include in the generated Macaroon
   # @return [Macaroon] a new Macaroon object from the macaroons gem
   def create_macaroon(caveats = {})
-    identifier = Identifier.new(schema: @schema, key_id: @keyring.default_key_id)
+    macaroon = golden_macaroon!
 
-    macaroon = Macaroon.new(
-      key:        @keyring.default_key,
-      identifier: identifier.to_str,
-      location:   @location
-    )
+    caveats.each do |id, caveat|
+      predicate = @schema.predicates[id]
+      fail InvalidCaveatError, "no predicate in schema for: #{id.inspect}" unless predicate
 
-    caveats.each do |id, predicate|
-      # TODO: verify caveat ID in schema
-      # TODO: proper type serialization
-      macaroon.add_first_party_caveat("#{id} #{predicate}")
+      macaroon.add_first_party_caveat(id + " " + predicate.serialize(caveat))
     end
 
     macaroon

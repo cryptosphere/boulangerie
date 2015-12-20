@@ -64,5 +64,19 @@ RSpec.describe Boulangerie do
       cookie = boulangerie.bake(example_caveats)
       expect(cookie).to be_a String
     end
+
+    context "undefined predicates" do
+      let(:invalid_caveats) do
+        {
+          "derp" => Time.now
+        }
+      end
+
+      it "raises InvalidCaveatError" do
+        expect do
+          boulangerie.create_macaroon(example_caveats.merge(invalid_caveats))
+        end.to raise_exception(Boulangerie::InvalidCaveatError)
+      end
+    end
   end
 end

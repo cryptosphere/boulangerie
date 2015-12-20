@@ -15,6 +15,7 @@ class Boulangerie
       fail ArgumentError, "key_id not in keyring: #{key_id.inspect}" unless keys.key?(key_id)
 
       keys.each do |id, key|
+        id.freeze
         fail ArgumentError, "malformatted key: #{id}" unless key.length == KEY_LENGTH * 2 # hex
       end
 
