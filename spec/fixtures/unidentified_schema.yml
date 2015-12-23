@@ -4,5 +4,4 @@ predicates:
     time-before: DateTime
     time-after: DateTime
     blobby: Binary
-    stringy: String
     booleany: Boolean

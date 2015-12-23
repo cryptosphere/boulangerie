@@ -1,15 +1,24 @@
+# stdlib stuff
 require "securerandom"
 require "yaml"
 
+# External gems
 require "rbnacl/libsodium"
 require "macaroons"
 
 require "boulangerie/version"
 
+# Boulangerie Classes
 require "boulangerie/identifier"
 require "boulangerie/keyring"
 require "boulangerie/predicate"
 require "boulangerie/schema"
+require "boulangerie/type"
+
+# Boulangerie Types
+require "boulangerie/type/binary"
+require "boulangerie/type/boolean"
+require "boulangerie/type/date_time"
 
 # An opinionated library for creating and verifying Macaroons in Ruby
 class Boulangerie
@@ -20,6 +29,9 @@ class Boulangerie
 
   # Caveats are invalid
   InvalidCaveatError = Class.new(StandardError)
+
+  # Problems with serialization/deserialization
+  SerializationError = Class.new(StandardError)
 
   # Default Boulangerie
   @default = nil
@@ -80,7 +92,7 @@ class Boulangerie
         predicate = @schema.predicates[id]
         fail InvalidCaveatError, "no predicate in schema for: #{id.inspect}" unless predicate
 
-        macaroon.add_first_party_caveat(id + " " + predicate.serialize(caveat))
+        macaroon.add_first_party_caveat("#{id} #{predicate.serialize(caveat)}")
       end
     end
   end
