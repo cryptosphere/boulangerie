@@ -69,16 +69,20 @@ class Boulangerie
   # @param [Hash] caveats to include in the generated Macaroon
   # @return [Macaroon] a new Macaroon object from the macaroons gem
   def create_macaroon(caveats = {})
-    macaroon = golden_macaroon!
+    unspecified_predicates = @schema.predicates.keys - caveats.keys
 
-    caveats.each do |id, caveat|
-      predicate = @schema.predicates[id]
-      fail InvalidCaveatError, "no predicate in schema for: #{id.inspect}" unless predicate
-
-      macaroon.add_first_party_caveat(id + " " + predicate.serialize(caveat))
+    unless unspecified_predicates.empty?
+      fail InvalidCaveatError, "no caveat specified for #{unspecified_predicates.first}"
     end
 
-    macaroon
+    golden_macaroon!.tap do |macaroon|
+      caveats.each do |id, caveat|
+        predicate = @schema.predicates[id]
+        fail InvalidCaveatError, "no predicate in schema for: #{id.inspect}" unless predicate
+
+        macaroon.add_first_party_caveat(id + " " + predicate.serialize(caveat))
+      end
+    end
   end
 
   # Creates a serialized macaroon as a String for use in a cookie
