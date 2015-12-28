@@ -1,6 +1,7 @@
 # stdlib stuff
 require "securerandom"
 require "yaml"
+require "time"
 
 # External gems
 require "rbnacl/libsodium"
