@@ -7,9 +7,6 @@ LineLength:
 Style/StringLiterals:
   EnforcedStyle: double_quotes
 
-Style/ClassVars:
-  Enabled: false
-
 Style/ClassAndModuleChildren:
   Enabled: false
 
