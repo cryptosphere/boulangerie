@@ -6,5 +6,7 @@ predicates:
     time-after: DateTime
     blobby: Binary
     booleany: Boolean
+    boolean-list: List(Boolean)
+    datetime-list: List(DateTime)
   v1:
     another-booleany: Boolean

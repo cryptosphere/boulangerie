@@ -17,6 +17,8 @@ require "boulangerie/schema"
 require "boulangerie/type"
 
 # Boulangerie Types
+require "boulangerie/type/list"
+
 require "boulangerie/type/binary"
 require "boulangerie/type/boolean"
 require "boulangerie/type/date_time"
