@@ -39,8 +39,21 @@ class Boulangerie
       predicate_versions = Array(schema["predicates"])
       fail ParseError, "no predicates in schema" if predicate_versions.empty?
 
+      parse_predicates(predicate_versions)
+    end
+
+    # What is the current version of the loaded schema?
+    def current_version
+      @versions.count - 1
+    end
+
+    private
+
+    def parse_predicates(predicate_versions)
       @predicates = {}
-      @versions = predicate_versions.map.with_index do |(version_name, predicates), index|
+      @versions   = []
+
+      predicate_versions.each_with_index do |(version_name, predicates), index|
         unless (version = version_name[/\Av(\d+)\z/, 1])
           fail InvalidVersionError, "malformed version identifier: #{version_name.inspect}"
         end
@@ -57,15 +70,11 @@ class Boulangerie
           version_predicates[id] = predicate
         end
 
-        version_predicates.freeze
-      end.freeze
+        @versions << version_predicates.freeze
+      end
 
       @predicates.freeze
-    end
-
-    # What is the current version of the loaded schema?
-    def current_version
-      @versions.count - 1
+      @versions.freeze
     end
   end
 end
