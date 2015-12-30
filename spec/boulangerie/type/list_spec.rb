@@ -1,7 +1,7 @@
 RSpec.describe Boulangerie::Type::List do
   let(:example_type)   { "Boolean" }
   let(:example_array)  { [true, false, true] }
-  let(:example_output) { "true false true" }
+  let(:example_output) { example_array.join(" ") }
 
   subject { described_class.new(list_type: Boulangerie::Type[example_type]) }
 

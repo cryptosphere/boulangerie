@@ -10,7 +10,10 @@ class Boulangerie::Type::List < Boulangerie::Type
   end
 
   def serialize(array)
-    array.map { |value| @list_type.serialize(value) }.join(DELIMITER)
+    array.map do |value|
+      @list_type.typecheck(value)
+      @list_type.serialize(value)
+    end.join(DELIMITER)
   end
 
   def deserialize(string)
