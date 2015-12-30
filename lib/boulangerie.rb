@@ -23,6 +23,7 @@ require "boulangerie/type/binary"
 require "boulangerie/type/boolean"
 require "boulangerie/type/date_time"
 require "boulangerie/type/decimal"
+require "boulangerie/type/label"
 
 # An opinionated library for creating and verifying Macaroons in Ruby
 class Boulangerie
