@@ -23,5 +23,12 @@ class Boulangerie
     def initialize(allowed_classes: [])
       @allowed_classes = Array(allowed_classes)
     end
+
+    def typecheck(value)
+      unless @allowed_classes.any? { |klass| value.is_a?(klass) }
+        fail TypeError, "can't serialize #{value.class} as a #{@type.type_name}"
+      end
+      true
+    end
   end
 end

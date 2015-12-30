@@ -10,3 +10,5 @@ predicates:
     datetime-list: List(DateTime)
   v1:
     another-booleany: Boolean
+  v2:
+    decimal-list: List(Decimal)

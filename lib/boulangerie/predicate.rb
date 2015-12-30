@@ -11,10 +11,7 @@ class Boulangerie
     end
 
     def serialize(value)
-      unless @type.allowed_classes.any? { |klass| value.is_a?(klass) }
-        fail TypeError, "can't serialize #{value.class} as a #{@type.type_name}"
-      end
-
+      @type.typecheck(value)
       @type.serialize(value)
     end
   end
