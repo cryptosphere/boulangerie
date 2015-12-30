@@ -12,3 +12,4 @@ predicates:
     another-booleany: Boolean
   v2:
     decimal-list: List(Decimal)
+    label-list: List(Label)
