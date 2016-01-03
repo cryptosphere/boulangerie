@@ -4,6 +4,7 @@
 [![Build Status](https://travis-ci.org/cryptosphere/boulangerie.svg)](https://travis-ci.org/cryptosphere/boulangerie)
 [![Code Climate](https://codeclimate.com/github/cryptosphere/boulangerie/badges/gpa.svg)](https://codeclimate.com/github/cryptosphere/boulangerie)
 [![Coverage Status](https://coveralls.io/repos/cryptosphere/boulangerie/badge.svg?branch=master&service=github)](https://coveralls.io/github/cryptosphere/boulangerie?branch=master)
+[![MIT licensed](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/cryptosphere/boulangerie/master/LICENSE.txt)
 
 Boulangerie is a Ruby gem for building authorization systems using
 [Macaroons](http://macaroons.io), a better kind of cookie.
