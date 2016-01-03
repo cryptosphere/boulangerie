@@ -187,5 +187,5 @@ This library supports and is tested against the following Ruby versions:
 
 ## License
 
-Copyright (c) 2015 Tony Arcieri. Distributed under the MIT License. See
-LICENSE.txt for further details.
+Copyright (c) 2015-2016 Tony Arcieri. Distributed under the MIT License.
+See LICENSE.txt for further details.
