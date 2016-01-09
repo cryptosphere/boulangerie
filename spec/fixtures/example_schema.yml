@@ -13,3 +13,5 @@ predicates:
   v2:
     decimal-list: List(Decimal)
     label-list: List(Label)
+  v3:
+    uri-list: List(URI)

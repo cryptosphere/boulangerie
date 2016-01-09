@@ -2,6 +2,7 @@
 require "securerandom"
 require "yaml"
 require "time"
+require "uri"
 
 # External gems
 require "rbnacl/libsodium"
@@ -24,6 +25,7 @@ require "boulangerie/type/boolean"
 require "boulangerie/type/date_time"
 require "boulangerie/type/decimal"
 require "boulangerie/type/label"
+require "boulangerie/type/uri"
 
 # An opinionated library for creating and verifying Macaroons in Ruby
 class Boulangerie
