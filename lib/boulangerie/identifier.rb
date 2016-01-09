@@ -15,6 +15,7 @@ class Boulangerie
     # Serialize identifier as a string
     def to_str
       [
+        "v:#{Boulangerie::FORMAT_VERSION}",
         "uuid:#{@nonce}",
         "kid:#{@key_id}",
         "sch:#{@schema_id}@#{@schema_version}",

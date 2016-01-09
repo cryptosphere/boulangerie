@@ -31,6 +31,9 @@ require "boulangerie/type/uri"
 class Boulangerie
   attr_reader :schema
 
+  # Version of the format used
+  FORMAT_VERSION = 0
+
   # Raised if Boulangerie's global maker hasn't been configured
   NotConfiguredError = Class.new(StandardError)
 
