@@ -99,7 +99,7 @@ class Boulangerie
         predicate = @schema.predicates[id]
         fail InvalidCaveatError, "no predicate in schema for: #{id.inspect}" unless predicate
 
-        macaroon.add_first_party_caveat("#{id} #{predicate.serialize(caveat)}")
+        macaroon.add_first_party_caveat("#{id}: #{predicate.serialize(caveat)}")
       end
     end
   end
