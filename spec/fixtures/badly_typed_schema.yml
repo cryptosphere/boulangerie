@@ -2,6 +2,6 @@
 schema-id: b08c80c83260c2be
 predicates:
   v0:
-    time-before: DateTime
-    time-after: DateTime
+    not-before: DateTime
+    expires: DateTime
     broken: Derp

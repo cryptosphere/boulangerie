@@ -98,15 +98,15 @@ Rotating keys is good security practice and you should definitely take advantage
 
 You'll also need to create a `config/boulangerie_schema.yml` file that
 contains the schema for your Macaroons. Here is a basic schema that will
-add `time-before` and `time-after` timestamp assertions on your Macaroons:
+add `not-before` and `expires` timestamp assertions on your Macaroons:
 
 ```yaml
 ---
 schema-id: ee6da70e5ba01fec
 predicates:
   v0:
-    time-before: DateTime
-    time-after: DateTime
+    not-before: DateTime
+    expires: DateTime
 ```
 
 A `schema-id` is a 64-bit random number. This is used to identify a schema
@@ -142,8 +142,8 @@ class AuthenticationController < ApplicationController
     expires_at = 24.hours.from_now
 
     cookie = Boulangerie.bake(
-      "time-after"  => Time.now,
-      "time-before" => expires_at
+      "expires"  => Time.now,
+      "not-before" => expires_at
     )
 
     cookies[:my_macaroon] = {

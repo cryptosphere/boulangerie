@@ -2,8 +2,8 @@
 schema-id: d145e7d95af54557
 predicates:
   v0:
-    time-before: DateTime
-    time-after: DateTime
+    not-before: DateTime
+    expires: DateTime
     blobby: Binary
     booleany: Boolean
   v1:

@@ -1,7 +1,7 @@
 ---
 predicates:
   v0:
-    time-before: DateTime
-    time-after: DateTime
+    not-before: DateTime
+    expires: DateTime
     blobby: Binary
     booleany: Boolean
