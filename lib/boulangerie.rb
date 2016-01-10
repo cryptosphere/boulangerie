@@ -88,9 +88,10 @@ class Boulangerie
 
   # Creates a new Macaroon object from the given caveats
   #
-  # @param [Hash] caveats to include in the generated Macaroon
+  # @param [Hash] :caveats to include in the generated Macaroon
+  #
   # @return [Macaroon] a new Macaroon object from the macaroons gem
-  def create_macaroon(caveats = {})
+  def create_macaroon(caveats: {})
     unspecified_predicates = @schema.predicates.keys - caveats.keys
 
     unless unspecified_predicates.empty?
@@ -109,9 +110,10 @@ class Boulangerie
 
   # Creates a serialized macaroon as a String for use in a cookie
   #
-  # @param [Hash] caveats to pass to #create_macaroon
+  # @param [Hash] :caveats to pass to #create_macaroon
+  #
   # @return [String] a serialized Macaroon that can be used as a cookie
-  def bake(caveats = {})
-    create_macaroon(caveats).serialize
+  def bake(**args)
+    create_macaroon(**args).serialize
   end
 end

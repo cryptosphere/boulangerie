@@ -51,7 +51,7 @@ RSpec.describe Boulangerie do
 
     it "creates Macaroons" do
       Timecop.freeze do
-        macaroon = boulangerie.create_macaroon(example_caveats)
+        macaroon = boulangerie.create_macaroon(caveats: example_caveats)
 
         expect(macaroon).to be_a Macaroon
         expect(macaroon.location).to eq example_location
@@ -61,7 +61,7 @@ RSpec.describe Boulangerie do
     end
 
     it "bakes cookies as strings" do
-      cookie = boulangerie.bake(example_caveats)
+      cookie = boulangerie.bake(caveats: example_caveats)
       expect(cookie).to be_a String
     end
 
@@ -74,7 +74,7 @@ RSpec.describe Boulangerie do
 
       it "raises InvalidCaveatError" do
         expect do
-          boulangerie.create_macaroon(example_caveats.merge(invalid_caveats))
+          boulangerie.create_macaroon(caveats: example_caveats.merge(invalid_caveats))
         end.to raise_exception(Boulangerie::InvalidCaveatError)
       end
     end
