@@ -16,7 +16,7 @@ class Boulangerie
     # Schema version invalid
     InvalidVersionError = Class.new(ParseError)
 
-    attr_reader :schema_id, :predicates
+    attr_reader :schema_id, :predicates, :current_version
 
     def self.create_schema_id
       SecureRandom.hex(8)
@@ -40,16 +40,13 @@ class Boulangerie
       fail ParseError, "no predicates in schema" if predicate_versions.empty?
 
       parse_predicates(predicate_versions)
-    end
 
-    # What is the current version of the loaded schema?
-    def current_version
-      @versions.count - 1
+      @current_version = @versions.count - 1
     end
 
     # Identifier used in the sch:... portion of a Macroon identifier
     def identifier
-      "#{@schema_id}@#{current_version}"
+      "#{@schema_id}@#{@current_version}"
     end
 
     private
