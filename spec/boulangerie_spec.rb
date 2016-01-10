@@ -53,7 +53,7 @@ RSpec.describe Boulangerie do
       Timecop.freeze do
         macaroon = boulangerie.create_macaroon(caveats: example_caveats)
 
-        expect(macaroon).to be_a Macaroon
+        expect(macaroon).to be_a Boulangerie::Macaroon
         expect(macaroon.location).to eq example_location
 
         # TODO: verify predicates

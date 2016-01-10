@@ -3,6 +3,7 @@ require "securerandom"
 require "yaml"
 require "time"
 require "uri"
+require "forwardable"
 
 # External gems
 require "rbnacl/libsodium"
@@ -13,6 +14,7 @@ require "boulangerie/version"
 # Boulangerie Classes
 require "boulangerie/identifier"
 require "boulangerie/keyring"
+require "boulangerie/macaroon"
 require "boulangerie/predicate"
 require "boulangerie/schema"
 require "boulangerie/type"
@@ -79,9 +81,9 @@ class Boulangerie
   def golden_macaroon!
     identifier = Identifier.new(schema: @schema, key_id: @keyring.default_key_id)
 
-    Macaroon.new(
+    Boulangerie::Macaroon.new(
       key:        @keyring.default_key,
-      identifier: identifier.to_str,
+      identifier: identifier,
       location:   @location
     )
   end
@@ -104,7 +106,7 @@ class Boulangerie
         predicate = @schema.predicates[id]
         fail InvalidCaveatError, "no predicate in schema for: #{id.inspect}" unless predicate
 
-        macaroon.add_first_party_caveat("#{id}: #{predicate.serialize(caveat)}")
+        macaroon.add_first_party_caveat(id, predicate.serialize(caveat))
       end
     end
   end
