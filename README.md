@@ -142,7 +142,7 @@ class AuthenticationController < ApplicationController
     expires_at = 24.hours.from_now
 
     cookie = Boulangerie.bake(
-      "expires"  => Time.now,
+      "expires"    => Time.now,
       "not-before" => expires_at
     )
 
@@ -176,7 +176,7 @@ usage coming soon!*
 
 This library supports and is tested against the following Ruby versions:
 
-* Ruby (MRI) 2.0, 2.1, 2.2
+* Ruby (MRI) 2.0, 2.1, 2.2, 2.3
 * JRuby 9000
 
 ## Contributing
