@@ -6,12 +6,20 @@ RSpec.describe Boulangerie::Schema do
   context "valid schema" do
     let(:example_schema_file) { fixture_path + "example_schema.yml" }
     let(:example_schema_id)   { "ee6da70e5ba01fec" }
+    let(:example_version)     { 3 }
 
-    it "loads schemas from YAML files" do
-      schema = described_class.from_yaml(example_schema_file.read)
+    subject { described_class.from_yaml(example_schema_file.read) }
 
-      expect(schema.schema_id).to eq example_schema_id
-      expect(schema.current_version).to eq 3
+    it "knows its identifier" do
+      expect(subject.schema_id).to eq example_schema_id
+    end
+
+    it "knows its version" do
+      expect(subject.current_version).to eq example_version
+    end
+
+    it "knows its identifier" do
+      expect(subject.identifier).to eq "#{example_schema_id}@#{example_version}"
     end
   end
 

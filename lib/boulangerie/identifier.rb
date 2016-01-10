@@ -4,12 +4,11 @@ class Boulangerie
     # Character to use for delimiting sections of the identifier
     DELIMITER = " "
 
-    def initialize(nonce: SecureRandom.uuid, schema: nil, key_id: nil, issued_at: Time.now.utc)
-      @nonce          = nonce
-      @schema_id      = schema.schema_id
-      @schema_version = schema.current_version
-      @key_id         = key_id
-      @issued_at      = issued_at
+    def initialize(nonce: SecureRandom.uuid, schema: nil, key_id: nil, issued_at: Time.now)
+      @nonce     = nonce
+      @schema    = schema
+      @key_id    = key_id
+      @issued_at = issued_at.utc
     end
 
     # Serialize identifier as a string
@@ -18,7 +17,7 @@ class Boulangerie
         "v:#{Boulangerie::FORMAT_VERSION}",
         "uuid:#{@nonce}",
         "kid:#{@key_id}",
-        "sch:#{@schema_id}@#{@schema_version}",
+        "sch:#{@schema.identifier}",
         "iat:#{@issued_at.iso8601}"
       ].join(DELIMITER)
     end

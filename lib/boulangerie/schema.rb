@@ -32,8 +32,8 @@ class Boulangerie
         fail ParseError, "unrecognized key in schema: #{extra_keys.first}"
       end
 
-      @schema_id = schema["schema-id"]
-      fail InvalidSchemaIdError, "no schema-id present" unless @schema_id
+      @schema_id = String(schema["schema-id"]).freeze
+      fail InvalidSchemaIdError, "no schema-id present" if @schema_id.empty?
       fail InvalidSchemaIdError, "bad schema-id: #{@schema_id}" unless @schema_id.match(/\h{16}/)
 
       predicate_versions = Array(schema["predicates"])
@@ -45,6 +45,11 @@ class Boulangerie
     # What is the current version of the loaded schema?
     def current_version
       @versions.count - 1
+    end
+
+    # Identifier used in the sch:... portion of a Macroon identifier
+    def identifier
+      "#{@schema_id}@#{current_version}"
     end
 
     private
