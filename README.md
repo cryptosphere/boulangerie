@@ -141,10 +141,10 @@ class AuthenticationController < ApplicationController
   def authenticate
     expires_at = 24.hours.from_now
 
-    cookie = Boulangerie.bake(
-      "expires"    => Time.now,
-      "not-before" => expires_at
-    )
+    cookie = Boulangerie.bake(caveats: {
+      expires:    Time.now,
+      not_before: expires_at
+    })
 
     cookies[:my_macaroon] = {
       value:    cookie,

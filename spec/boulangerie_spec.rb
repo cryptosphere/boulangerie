@@ -35,8 +35,8 @@ RSpec.describe Boulangerie do
   context "minting tokens" do
     let(:example_caveats) do
       {
-        "expires"    => Time.now + 5,
-        "not-before" => Time.now
+        expires:    Time.now + 5,
+        not_before: Time.now
       }
     end
 
@@ -68,7 +68,7 @@ RSpec.describe Boulangerie do
     context "undefined predicates" do
       let(:invalid_caveats) do
         {
-          "derp" => Time.now
+          derp: Time.now
         }
       end
 
