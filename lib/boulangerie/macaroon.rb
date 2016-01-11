@@ -3,14 +3,21 @@ class Boulangerie
   class Macaroon
     extend Forwardable
 
-    attr_reader :identifier
+    attr_reader :identifier, :raw_macaroon
 
-    def_delegators :@macaroon, :location, :signature, :serialize
+    def_delegators :@raw_macaroon, :location, :signature, :serialize
 
-    def initialize(key: nil, identifier: nil, location: nil)
+    def self.from_binary(serialized)
+      raw_macaroon = Macaroons::RawMacaroon.from_binary(serialized: serialized)
+      identifier   = Identifier.parse(raw_macaroon.identifier)
+
+      new(raw_macaroon: raw_macaroon, identifier: identifier)
+    end
+
+    def initialize(key: nil, identifier: nil, location: nil, raw_macaroon: nil)
       @identifier = identifier || fail(ArgumentError, "no identifier given")
 
-      @macaroon = Macaroons::Macaroon.new(
+      @raw_macaroon = raw_macaroon || Macaroons::RawMacaroon.new(
         key:        key,
         identifier: identifier.to_str,
         location:   location
@@ -22,7 +29,7 @@ class Boulangerie
     end
 
     def add_first_party_caveat(caveat_id, value)
-      @macaroon.add_first_party_caveat("#{caveat_id}: #{value}")
+      @raw_macaroon.add_first_party_caveat("#{caveat_id}: #{value}")
     end
   end
 end

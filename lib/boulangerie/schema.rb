@@ -44,10 +44,7 @@ class Boulangerie
       @current_version = @versions.count - 1
     end
 
-    # Identifier used in the sch:... portion of a Macroon identifier
-    def identifier
-      "#{@schema_id}@#{@current_version}"
-    end
+    alias_method :schema_version, :current_version
 
     private
 

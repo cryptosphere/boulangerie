@@ -14,5 +14,9 @@ class Boulangerie
       @type.typecheck(value)
       @type.serialize(value)
     end
+
+    def deserialize(string)
+      @type.deserialize(string)
+    end
   end
 end

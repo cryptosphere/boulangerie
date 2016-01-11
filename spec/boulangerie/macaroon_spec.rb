@@ -8,8 +8,9 @@ RSpec.describe Boulangerie::Macaroon do
 
   let(:example_identifier) do
     Boulangerie::Identifier.new(
-      schema: example_schema,
-      key_id: "k1"
+      schema_id:      example_schema.schema_id,
+      schema_version: example_schema.current_version,
+      key_id:         "k1"
     )
   end
 
@@ -21,7 +22,22 @@ RSpec.describe Boulangerie::Macaroon do
     )
   end
 
-  it "serializes" do
-    expect(subject.serialize).to be_a String
+  describe "::from_binary" do
+    it "parses macaroons" do
+      macaroon = described_class.from_binary(subject.serialize)
+      expect(macaroon).to be_a described_class
+    end
+  end
+
+  describe "#serialize" do
+    it "serializes" do
+      expect(subject.serialize).to be_a String
+    end
+  end
+
+  describe "#inspect" do
+    it "does not include keys in #inspect" do
+      expect(subject.inspect).to_not include(example_key)
+    end
   end
 end
