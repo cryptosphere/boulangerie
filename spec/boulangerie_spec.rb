@@ -6,13 +6,29 @@ RSpec.describe Boulangerie do
     { example_key_id => "BADA55BADA55BADA55BADA55BADA55BADA55BADA55BADA55BADA55BADA55BADA" }
   end
 
+  let(:example_caveats) do
+    {
+      expires:    Time.now + 5,
+      not_before: Time.now
+    }
+  end
+
+  subject(:boulangerie) do
+    described_class.new(
+      schema:   fixture_path.join("simple_schema.yml"),
+      keys:     example_keys,
+      key_id:   example_key_id,
+      location: example_location
+    )
+  end
+
   it "raises NotConfiguredError unless configured" do
     expect { described_class.default }.to raise_error(described_class::NotConfiguredError)
   end
 
   it "initializes a default Boulangerie" do
     boulangerie = described_class.new(
-      schema:   fixture_path.join("example_schema.yml"),
+      schema:   fixture_path.join("simple_schema.yml"),
       keys:     example_keys,
       key_id:   example_key_id,
       location: example_location
@@ -23,7 +39,7 @@ RSpec.describe Boulangerie do
 
   it "initializes from a Schema class instead of a path" do
     boulangerie = described_class.new(
-      schema:   Boulangerie::Schema.from_yaml(fixture_path.join("example_schema.yml").read),
+      schema:   Boulangerie::Schema.from_yaml(fixture_path.join("simple_schema.yml").read),
       keys:     example_keys,
       key_id:   example_key_id,
       location: example_location
@@ -33,36 +49,18 @@ RSpec.describe Boulangerie do
   end
 
   context "minting tokens" do
-    let(:example_caveats) do
-      {
-        expires:    Time.now + 5,
-        not_before: Time.now
-      }
-    end
-
-    let(:boulangerie) do
-      described_class.new(
-        schema:   fixture_path.join("simple_schema.yml"),
-        keys:     example_keys,
-        key_id:   example_key_id,
-        location: example_location
-      )
-    end
-
-    it "creates Macaroons" do
+    it "creates Boulangerie::Macaroons" do
       Timecop.freeze do
         macaroon = boulangerie.create_macaroon(caveats: example_caveats)
 
         expect(macaroon).to be_a Boulangerie::Macaroon
         expect(macaroon.location).to eq example_location
-
-        # TODO: verify predicates
       end
     end
 
-    it "bakes cookies as strings" do
-      cookie = boulangerie.bake(caveats: example_caveats)
-      expect(cookie).to be_a String
+    it "bakes serialized macaroons as Strings" do
+      token = boulangerie.bake(caveats: example_caveats)
+      expect(token).to be_a String
     end
 
     context "undefined predicates" do
@@ -77,6 +75,17 @@ RSpec.describe Boulangerie do
           boulangerie.create_macaroon(caveats: example_caveats.merge(invalid_caveats))
         end.to raise_exception(Boulangerie::InvalidCaveatError)
       end
+    end
+  end
+
+  context "parsing serialized macaroons" do
+    let(:example_token) { boulangerie.bake(caveats: example_caveats) }
+
+    it "parses and verifies tokens" do
+      macaroon = boulangerie.parse_and_verify(example_token)
+
+      expect(macaroon).to be_a Boulangerie::Macaroon
+      expect(macaroon.location).to eq example_location
     end
   end
 end

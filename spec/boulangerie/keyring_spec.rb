@@ -8,7 +8,7 @@ RSpec.describe Boulangerie::Keyring do
     }
   end
 
-  let(:example_keyring) { described_class.new(example_keys, key_id: default_key_id) }
+  let(:example_keyring) { described_class.new(keys: example_keys, key_id: default_key_id) }
 
   it "raises ArgumentError if key_id is not in the keyring" do
     expect do
@@ -35,6 +35,16 @@ RSpec.describe Boulangerie::Keyring do
   it "does not include keys in #to_s" do
     example_keys.each do |_kid, key|
       expect(example_keyring.to_s).to_not include(key)
+    end
+  end
+
+  describe "#fetch" do
+    it "allows access to keys" do
+      expect(example_keyring.fetch(default_key_id)).to eq example_keys[default_key_id]
+    end
+
+    it "raises KeyError for invalid keys" do
+      expect { example_keyring.fetch("invalid!") }.to raise_error KeyError
     end
   end
 end

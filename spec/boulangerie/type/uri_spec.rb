@@ -13,7 +13,7 @@ RSpec.describe Boulangerie::Type::URI do
       end
     end
 
-    it "raises SerializationError if bad characters are present" do
+    it "raises URI::InvalidURIError if bad characters are present" do
       expect { subject.serialize("not legit!") }.to raise_error(URI::InvalidURIError)
     end
   end

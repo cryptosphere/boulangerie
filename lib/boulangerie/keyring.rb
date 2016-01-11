@@ -10,7 +10,7 @@ class Boulangerie
       SecureRandom.hex(KEY_LENGTH)
     end
 
-    def initialize(keys, key_id: nil)
+    def initialize(keys: nil, key_id: nil)
       fail TypeError, "expected Hash, got #{keys.class}" unless keys.is_a? Hash
       fail ArgumentError, "key_id not in keyring: #{key_id.inspect}" unless keys.key?(key_id)
 
@@ -26,6 +26,11 @@ class Boulangerie
     # Key of the keyring we should use for generating new Macaroons
     def default_key
       @keys[@default_key_id]
+    end
+
+    # Read a key from the keyring
+    def fetch(key_id)
+      @keys.fetch(key_id)
     end
 
     def inspect

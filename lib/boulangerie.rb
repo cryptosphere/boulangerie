@@ -18,6 +18,11 @@ require "boulangerie/macaroon"
 require "boulangerie/predicate"
 require "boulangerie/schema"
 require "boulangerie/type"
+require "boulangerie/verifier"
+
+# Boulangerie Predicate Matchers
+require "boulangerie/matcher/expires"
+require "boulangerie/matcher/not_before"
 
 # Boulangerie Types
 require "boulangerie/type/list"
@@ -61,25 +66,30 @@ class Boulangerie
     default.bake(**args)
   end
 
-  def initialize(schema: nil, keys: nil, key_id: nil, location: nil)
+  def initialize(schema: nil, keys: nil, key_id: nil, location: nil, matchers: {})
     @schema =
       case schema
       when Schema           then schema
       when String, Pathname then Schema.from_yaml(File.read(schema.to_s))
       else fail TypeError,  "bad schema type: #{schema.class}"
-      end
+      end.freeze
 
-    @keyring  = Keyring.new(keys, key_id: key_id)
     @location = location || fail(ArgumentError, "no location given")
+    @keyring  = Keyring.new(keys: keys, key_id: key_id).freeze
+    @verifier = Verifier.new(schema: @schema, matchers: matchers).freeze
   end
 
   # Creates a "golden macaroon" with no caveats
   # WARNING: This bypasses the security benefits Boulangerie ordinarily
   # provides. Make sure you know what you're doing!
   #
-  # @return [Macaroon] a new golden Macaroon object with no caveats
+  # @return [Boulangerie::Macaroon] a new golden Macaroon object with no caveats
   def golden_macaroon!
-    identifier = Identifier.new(schema: @schema, key_id: @keyring.default_key_id)
+    identifier = Identifier.new(
+      schema_id:      @schema.schema_id,
+      schema_version: @schema.schema_version,
+      key_id:         @keyring.default_key_id
+    )
 
     Boulangerie::Macaroon.new(
       key:        @keyring.default_key,
@@ -120,7 +130,23 @@ class Boulangerie
     create_macaroon(**args).serialize
   end
 
-  private
+  # Parse a Macaroon and verify it against the registered predicate matchers
+  def parse_and_verify(serialized_token)
+    macaroon  = Boulangerie::Macaroon.from_binary(serialized_token)
+    schema_id = macaroon.identifier.schema_id
+
+    unless schema_id == @schema.schema_id
+      fail SerializationError, "bad schema ID: #{schema_id} (expected #{@schema.schema_id})"
+    end
+
+    @verifier.verify(
+      key: @keyring.fetch(macaroon.identifier.key_id),
+      macaroon: macaroon,
+      discharge_macaroons: []
+    )
+
+    macaroon
+  end
 
   def caveat_id(id)
     id.to_s.tr("_", "-")

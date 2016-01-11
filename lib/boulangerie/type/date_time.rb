@@ -8,5 +8,7 @@ class Boulangerie::Type::DateTime < Boulangerie::Type
 
   def deserialize(string)
     Time.iso8601(string)
+  rescue ArgumentError => ex
+    raise Boulangerie::SerializationError, ex.message, ex.backtrace
   end
 end

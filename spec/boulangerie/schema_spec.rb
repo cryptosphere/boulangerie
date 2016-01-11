@@ -17,10 +17,6 @@ RSpec.describe Boulangerie::Schema do
     it "knows its version" do
       expect(subject.current_version).to eq example_version
     end
-
-    it "knows its identifier" do
-      expect(subject.identifier).to eq "#{example_schema_id}@#{example_version}"
-    end
   end
 
   context "invalid schemas" do

@@ -10,15 +10,18 @@ Style/StringLiterals:
 Style/ClassAndModuleChildren:
   Enabled: false
 
+Style/SpaceAroundOperators:
+  Enabled: false
+
 Metrics/MethodLength:
   CountComments: false
-  Max: 25
+  Max: 50
 
 Metrics/AbcSize:
   Enabled: false
 
 Metrics/CyclomaticComplexity:
-  Max: 10
+  Max: 15
 
 Metrics/PerceivedComplexity:
-  Max: 10
+  Max: 15
