@@ -13,6 +13,8 @@ class Boulangerie
       parts = {}
 
       ALLOWED_LABELS.zip(string.split(" ")).each do |label, part|
+        fail SerializationError, "missing '#{label}' in identifier" unless part
+
         matches = part.match(/\A(?<label>[a-z]+):(?<value>.*)\z/)
         fail SerializationError, "bad identifier: #{part}" unless matches
         fail SerializationError, "missing '#{label}' in identifier" unless label == matches[:label]
