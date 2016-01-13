@@ -20,7 +20,7 @@ class Boulangerie
       end
 
       unless Integer(parts["v"], 10) == FORMAT_VERSION
-        fail SerializationError, "bad version: #{parts["v"].inspect}"
+        fail SerializationError, "bad version: #{parts['v'].inspect}"
       end
 
       unless (missing_labels = ALLOWED_LABELS - parts.keys).empty?
