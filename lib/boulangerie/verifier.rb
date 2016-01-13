@@ -6,13 +6,14 @@ class Boulangerie
       @matchers = matchers
 
       # Add default matchers
-      @matchers["expires"]    ||= Matcher::Expires.new
-      @matchers["not-before"] ||= Matcher::NotBefore.new
+      @matchers["expires"]    ||= Matcher::Expires.new.freeze
+      @matchers["not-before"] ||= Matcher::NotBefore.new.freeze
 
-      missing_matchers = @schema.predicates.keys - @matchers.keys
-      return if missing_matchers.empty?
+      unless (missing_matchers = @schema.predicates.keys - @matchers.keys).empty?
+        fail ArgumentError, "no matcher defined for: #{missing_matchers.first}"
+      end
 
-      fail ArgumentError, "missing matcher for: #{missing_matchers.first}"
+      @matchers.freeze
     end
 
     def verify(key: nil, macaroon: nil, discharge_macaroons: [], context: nil)

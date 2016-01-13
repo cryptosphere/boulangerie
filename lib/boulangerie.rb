@@ -76,6 +76,8 @@ class Boulangerie
 
     @location = location || fail(ArgumentError, "no location given")
     @keyring  = Keyring.new(keys: keys, key_id: key_id).freeze
+
+    matchers  = Hash[matchers.map { |k, v| [caveat_id(k), v] }]
     @verifier = Verifier.new(schema: @schema, matchers: matchers).freeze
   end
 
