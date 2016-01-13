@@ -12,19 +12,16 @@ class Boulangerie
     def self.parse(string)
       parts = {}
 
-      string.split(" ").each do |part|
+      ALLOWED_LABELS.zip(string.split(" ")).each do |label, part|
         matches = part.match(/\A(?<label>[a-z]+):(?<value>.*)\z/)
         fail SerializationError, "bad identifier: #{part}" unless matches
+        fail SerializationError, "missing '#{label}' in identifier" unless label == matches[:label]
 
         parts[matches[:label]] = matches[:value]
       end
 
       unless Integer(parts["v"], 10) == FORMAT_VERSION
         fail SerializationError, "bad version: #{parts['v'].inspect}"
-      end
-
-      unless (missing_labels = ALLOWED_LABELS - parts.keys).empty?
-        fail SerializationError, "missing '#{missing_labels.first}' in identifier"
       end
 
       schema = parts["sch"].match(/\A(?<id>[a-z0-9]{16})@(?<version>\d+)\z/)
