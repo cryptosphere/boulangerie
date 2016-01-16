@@ -57,7 +57,7 @@ need for making authorization decisions using cookie-like bearer credentials.
 Please see the [boulangerie-rails] gem for instructions on how to use
 Boulangerie with Rails.
 
-[boulangerie-rails]: https://github.com/cryptosphere/boulangerie
+[boulangerie-rails]: https://github.com/cryptosphere/boulangerie-rails
 
 ### Non-Rails Usage
 
