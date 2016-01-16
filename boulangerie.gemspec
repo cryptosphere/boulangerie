@@ -24,7 +24,6 @@ Gem::Specification.new do |spec|
   spec.required_ruby_version = ">= 2.0.0"
 
   spec.add_runtime_dependency "macaroons"
-  spec.add_runtime_dependency "rbnacl-libsodium"
 
   spec.add_development_dependency "rake", "~> 10.0"
 end
