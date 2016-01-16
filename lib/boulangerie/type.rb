@@ -1,7 +1,7 @@
 class Boulangerie
   # Static types for schemas and serialized data
   class Type
-    REGISTRY = {}
+    REGISTRY = {} # rubocop:disable Style/MutableConstant
 
     attr_accessor :type_name
     attr_reader :allowed_classes

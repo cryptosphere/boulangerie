@@ -1,11 +1,12 @@
+# frozen_string_literal: true
 class Boulangerie
   # A unique identifier per Macaroon incorporating key/schema info
   class Identifier
     # Labels allowed in identifier headers
-    ALLOWED_LABELS = %w(v uuid kid sch iat)
+    ALLOWED_LABELS = %w(v uuid kid sch iat).freeze
 
     # Character to use for delimiting sections of the identifier
-    DELIMITER = " "
+    DELIMITER = " ".freeze
 
     attr_reader :uuid, :schema_id, :schema_version, :key_id, :issued_at
 

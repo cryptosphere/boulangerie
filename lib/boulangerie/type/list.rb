@@ -1,7 +1,8 @@
+# frozen_string_literal: true
 # Support for lists of other types
 class Boulangerie::Type::List < Boulangerie::Type
   # Character to use for delimiting elements of a list
-  DELIMITER = " "
+  DELIMITER = " ".freeze
 
   def initialize(allowed_classes: [Array], list_type: nil)
     super(allowed_classes: allowed_classes)

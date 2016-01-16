@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 # Support for 'true' and 'false'
 class Boulangerie::Type::Boolean < Boulangerie::Type
   register "Boolean", new(allowed_classes: [TrueClass, FalseClass, NilClass]), list_allowed: true

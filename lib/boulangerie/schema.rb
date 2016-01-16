@@ -5,7 +5,7 @@ class Boulangerie
     VALID_TOPLEVEL_KEYS = %w(
       schema-id
       predicates
-    )
+    ).freeze
 
     # Error parsing schema
     ParseError = Class.new(StandardError)
@@ -34,7 +34,7 @@ class Boulangerie
 
       @schema_id = String(schema["schema-id"]).freeze
       fail InvalidSchemaIdError, "no schema-id present" if @schema_id.empty?
-      fail InvalidSchemaIdError, "bad schema-id: #{@schema_id}" unless @schema_id.match(/\h{16}/)
+      fail InvalidSchemaIdError, "bad schema-id: #{@schema_id}" unless @schema_id =~ /\h{16}/
 
       predicate_versions = Array(schema["predicates"])
       fail ParseError, "no predicates in schema" if predicate_versions.empty?
@@ -44,7 +44,7 @@ class Boulangerie
       @current_version = @versions.count - 1
     end
 
-    alias_method :schema_version, :current_version
+    alias schema_version current_version
 
     private
 
