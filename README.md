@@ -47,21 +47,20 @@ Or install it yourself as:
 
     $ gem install boulangerie
 
-## Usage
-
-Boulangerie can be used with Rails or any other pure Ruby project which has
-need for making authorization decisions using cookie-like bearer credentials.
-
-### Rails
+## Rails Support
 
 Please see the [boulangerie-rails] gem for instructions on how to use
 Boulangerie with Rails.
 
 [boulangerie-rails]: https://github.com/cryptosphere/boulangerie-rails
 
-### Non-Rails Usage
+## Usage
 
-Coming soon!
+Boulangerie is used best to provide domain-object specific access tokens.
+Where other access control systems place great focus on making everything
+user/identity-centric, Macaroons are authorization-centric, and work best
+when you describe access control in terms of properties of the objects
+for which the credential authorizes access.
 
 ## Supported Ruby Versions
 
