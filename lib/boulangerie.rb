@@ -66,7 +66,7 @@ class Boulangerie
     default.bake(**args)
   end
 
-  def initialize(schema: nil, keys: nil, key_id: nil, location: nil, matchers: {})
+  def initialize(schema: nil, keyring: nil, location: nil, matchers: {})
     @schema =
       case schema
       when Schema           then schema
@@ -75,7 +75,7 @@ class Boulangerie
       end.freeze
 
     @location = location || fail(ArgumentError, "no location given")
-    @keyring  = Keyring.new(keys: keys, key_id: key_id).freeze
+    @keyring  = keyring  || fail(ArgumentError, "no keyring given")
 
     matchers  = Hash[matchers.map { |k, v| [caveat_id(k), v] }]
     @verifier = Verifier.new(schema: @schema, matchers: matchers).freeze

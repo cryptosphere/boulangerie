@@ -7,6 +7,13 @@ RSpec.describe Boulangerie::Verifier do
     Boulangerie::Schema.from_yaml(fixture_path.join("simple_schema.yml").read)
   end
 
+  let(:example_keyring) do
+    Boulangerie::Keyring.new(
+      keys:   { example_key_id => example_key },
+      key_id: example_key_id
+    )
+  end
+
   let(:example_caveats) do
     {
       expires:    Time.now + 5,
@@ -17,8 +24,7 @@ RSpec.describe Boulangerie::Verifier do
   let(:example_macaroon) do
     Boulangerie.new(
       schema:   example_schema,
-      keys:     { example_key_id => example_key },
-      key_id:   example_key_id,
+      keyring:  example_keyring,
       location: example_location
     ).create_macaroon(caveats: example_caveats)
   end

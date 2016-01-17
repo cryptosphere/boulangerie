@@ -13,11 +13,17 @@ RSpec.describe Boulangerie do
     }
   end
 
+  let(:example_keyring) do
+    Boulangerie::Keyring.new(
+      keys:     example_keys,
+      key_id:   example_key_id
+    )
+  end
+
   subject(:boulangerie) do
     described_class.new(
       schema:   fixture_path.join("simple_schema.yml"),
-      keys:     example_keys,
-      key_id:   example_key_id,
+      keyring:  example_keyring,
       location: example_location
     )
   end
@@ -26,22 +32,10 @@ RSpec.describe Boulangerie do
     expect { described_class.default }.to raise_error(described_class::NotConfiguredError)
   end
 
-  it "initializes a default Boulangerie" do
-    boulangerie = described_class.new(
-      schema:   fixture_path.join("simple_schema.yml"),
-      keys:     example_keys,
-      key_id:   example_key_id,
-      location: example_location
-    )
-
-    expect(boulangerie).to be_a described_class
-  end
-
   it "initializes from a Schema class instead of a path" do
     boulangerie = described_class.new(
       schema:   Boulangerie::Schema.from_yaml(fixture_path.join("simple_schema.yml").read),
-      keys:     example_keys,
-      key_id:   example_key_id,
+      keyring:  example_keyring,
       location: example_location
     )
 

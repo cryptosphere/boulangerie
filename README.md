@@ -62,6 +62,20 @@ user/identity-centric, Macaroons are authorization-centric, and work best
 when you describe access control in terms of properties of the objects
 for which the credential authorizes access.
 
+## Keyrings
+
+Boulangerie supports the use of more than key simultaneously for the purposes
+of key rotation.
+
+To create a new keyring, do the following:
+
+```ruby
+keyring = Boulangerie::Keyring.new(
+  keys:   YAML.load_file("mykeys.yaml")
+  key_id: "k1"
+)
+```
+
 ## Supported Ruby Versions
 
 This library supports and is tested against the following Ruby versions:
