@@ -12,6 +12,6 @@ predicates:
     another-booleany: Boolean
   v2:
     decimal-list: List(Decimal)
-    label-list: List(Label)
+    atom-list: List(Atom)
   v3:
     uri-list: List(URI)

@@ -1,4 +1,4 @@
-RSpec.describe Boulangerie::Type::Label do
+RSpec.describe Boulangerie::Type::Atom do
   let(:examples) do
     %w(
       foobar foo-bar-baz foo_bar_baz

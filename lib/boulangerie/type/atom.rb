@@ -1,9 +1,9 @@
 # Constrained strings useful for representing a wide variety of formats
-class Boulangerie::Type::Label < Boulangerie::Type
+class Boulangerie::Type::Atom < Boulangerie::Type
   # All valid labels must match this regex
   LABEL_REGEX = %r{\A[0-9a-zA-Z\.\/\-_]+\z}
 
-  register "Label", new(allowed_classes: [String, Symbol]), list_allowed: true
+  register "Atom", new(allowed_classes: [String, Symbol]), list_allowed: true
 
   def serialize(value)
     value = value.to_s

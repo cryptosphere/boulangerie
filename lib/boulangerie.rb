@@ -27,11 +27,11 @@ require "boulangerie/matcher/not_before"
 # Boulangerie Types
 require "boulangerie/type/list"
 
+require "boulangerie/type/atom"
 require "boulangerie/type/binary"
 require "boulangerie/type/boolean"
 require "boulangerie/type/date_time"
 require "boulangerie/type/decimal"
-require "boulangerie/type/label"
 require "boulangerie/type/uri"
 
 # An opinionated library for creating and verifying Macaroons in Ruby
