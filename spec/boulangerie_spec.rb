@@ -46,9 +46,7 @@ RSpec.describe Boulangerie do
     it "creates Boulangerie::Macaroons" do
       Timecop.freeze do
         macaroon = boulangerie.create_macaroon(caveats: example_caveats)
-
         expect(macaroon).to be_a Boulangerie::Macaroon
-        expect(macaroon.location).to eq example_location
       end
     end
 
@@ -77,9 +75,7 @@ RSpec.describe Boulangerie do
 
     it "parses and verifies tokens" do
       macaroon = boulangerie.parse_and_verify(example_token)
-
       expect(macaroon).to be_a Boulangerie::Macaroon
-      expect(macaroon.location).to eq example_location
     end
   end
 end
