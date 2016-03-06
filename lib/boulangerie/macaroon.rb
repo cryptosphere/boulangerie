@@ -5,7 +5,9 @@ class Boulangerie
 
     attr_reader :identifier, :raw_macaroon
 
-    def_delegators :@raw_macaroon, :location, :signature, :serialize
+    # NOTE: location is intentionally not exposed as it's malleable and
+    # could lead to potential attacks if used in an authorization decision
+    def_delegators :@raw_macaroon, :signature, :serialize
 
     def self.from_binary(serialized)
       raw_macaroon = Macaroons::RawMacaroon.from_binary(serialized: serialized)
